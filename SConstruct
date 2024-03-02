@@ -34,9 +34,12 @@ env.Prepend(CPPPATH=[box2d_folder + folder for folder in box2d_include])
 env.Append(CPPDEFINES="B2_USER_SETTINGS")
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-env.Append(CPPPATH=["src/"])
+env.Append(CPPPATH=["src/*"])
+
 #sources = [Glob("src/*.cpp"),Glob("src/bodies/*.cpp"),Glob("src/joints/*.cpp"),Glob("src/servers/*.cpp"),Glob("src/shapes/*.cpp"),Glob("src/spaces/*.cpp")]
-sources = Glob("src/*.cpp")
+#sources = Glob("src/*.cpp")
+sources = GlobRecursive("*.cpp","src/")
+
 #sources.extend([box2d_folder + 'src/' + box2d_src_file for box2d_src_file in box2d_src])
 sources += GlobRecursive("*.cpp",box2d_folder + 'src/')
 

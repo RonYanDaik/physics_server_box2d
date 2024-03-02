@@ -39,16 +39,14 @@ void uninitialize_physics_server_box2d_module(ModuleInitializationLevel p_level)
 }
 
 extern "C" {
-
 // Initialization.
+	GDExtensionBool GDE_EXPORT physics_server_box2d_library_init(const GDExtensionInterface *p_interface, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+		godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
 
-GDExtensionBool GDE_EXPORT physics_server_box2d_library_init(const GDExtensionInterface *p_interface, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
-	godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
+		init_obj.register_initializer(initialize_physics_server_box2d_module);
+		init_obj.register_terminator(uninitialize_physics_server_box2d_module);
+		init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SERVERS);
 
-	init_obj.register_initializer(initialize_physics_server_box2d_module);
-	init_obj.register_terminator(uninitialize_physics_server_box2d_module);
-	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SERVERS);
-
-	return init_obj.init();
-}
+		return init_obj.init();
+	}
 }

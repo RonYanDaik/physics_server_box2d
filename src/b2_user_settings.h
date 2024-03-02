@@ -15,17 +15,20 @@
 /// this too much because b2BlockAllocator has a maximum object size.
 #define b2_maxPolygonVertices 8
 
-// User data
+class Box2DCollisionObject;
 
+// User data
 struct B2_API b2BodyUserData
 {
 	b2BodyUserData()
 	{
 		pointer = 0;
+		collision_object = nullptr;
 	}
 
 	/// For legacy compatibility
 	uintptr_t pointer;
+	Box2DCollisionObject *collision_object;
 };
 
 struct B2_API b2FixtureUserData {

@@ -1,2 +1,1 @@
 scons
-pause

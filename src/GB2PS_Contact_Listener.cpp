@@ -1,6 +1,6 @@
 ﻿#include "GB2PS_Contact_Listener.h"
 #include "box2d/b2_contact.h"
-#include "box2d_collision_object.h"
+#include "bodies/box2d_collision_object.h"
 
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/variant/callable.hpp>
@@ -42,7 +42,7 @@ void GB2PS_ContactListener::AreaToBody(bool enter, Box2DArea *coA, Box2DCollisio
 	//if(coA->ares_body_callback)
 	{
 		//UtilityFunctions::print("Area to body collision. Callable: ",*coA->ares_body_callback);
-		Variant ret = coA->ares_body_callback.callv(Array::make((int)(!enter),coA->get_self(),coB->get_instance_id(),0,0));
+		//Variant ret = coA->ares_body_callback.callv(Array::make((int)(!enter),coA->get_self(),coB->get_instance_id(),0,0));
 		//UtilityFunctions::print("Area to body collision. ret var: ",ret);
 	}
 

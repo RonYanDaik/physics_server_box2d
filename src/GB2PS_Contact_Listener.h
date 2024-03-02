@@ -1,7 +1,7 @@
 ﻿#ifndef PHYSICS_GB2PS_ContactListener
 #define PHYSICS_GB2PS_ContactListener
 
-#include "box2d_area.h"
+#include "bodies/box2d_area.h"
 #include "box2d/b2_world_callbacks.h"
 
 class Box2DCollisionObject;
