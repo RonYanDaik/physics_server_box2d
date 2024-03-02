@@ -10,7 +10,10 @@
 #include <godot_cpp/classes/physics_direct_body_state2d.hpp>
 #include <godot_cpp/classes/physics_server2d.hpp>
 #include <godot_cpp/classes/physics_server2d_extension.hpp>
+#include <godot_cpp/classes/physics_direct_space_state2d.hpp>
+#include <godot_cpp/classes/physics_server2d_extension_motion_result.hpp>
 #include <godot_cpp/variant/callable.hpp>
+
 
 #include <godot_cpp/core/binder_common.hpp>
 
@@ -22,7 +25,10 @@
 #include "box2d_shape.h"
 #include "box2d_space.h"
 
+class GodotSpace2D;
 using namespace godot;
+
+
 
 class PhysicsServerBox2D : public PhysicsServer2DExtension {
 	GDCLASS(PhysicsServerBox2D, PhysicsServer2DExtension);
@@ -47,6 +53,7 @@ protected:
 	static void _bind_methods(){};
 
 public:
+
 	virtual RID _circle_shape_create() override;
 	virtual RID _rectangle_shape_create() override;
 	virtual RID _capsule_shape_create() override;
@@ -121,6 +128,31 @@ public:
 
 	PhysicsServerBox2D();
 	~PhysicsServerBox2D();
+	
+	bool _body_test_motion(const RID& body, const Transform2D& from, const Vector2& motion, double margin,
+		bool collide_separation_ray, bool recovery_as_collision,
+		PhysicsServer2DExtensionMotionResult* result) const override;
+	virtual void _area_attach_canvas_instance_id(const RID& area, uint64_t id) override;
+	virtual void _area_set_collision_layer(const RID& area, uint32_t layer) override;
+	virtual void _area_set_monitorable(const RID& area, bool monitorable) override;
+	virtual void _area_set_pickable(const RID& area, bool pickable) override;
+	virtual void _area_set_monitor_callback(const RID& area, const Callable& callback) override;
+	virtual void _area_set_area_monitor_callback(const RID& area, const Callable& callback) override;
+	virtual void _body_set_shape_as_one_way_collision(const RID& body, int32_t shape_idx, bool enable, double margin) override;
+	virtual void _body_attach_canvas_instance_id(const RID& body, uint64_t id) override;
+	virtual void _body_set_pickable(const RID& body, bool pickable) override;
+
+	void _area_set_collision_mask(const RID &area, uint32_t mask) override;
+	uint32_t _area_get_collision_mask(const RID &area) const override;
+	void _body_set_collision_mask(const RID &body, uint32_t mask) override;
+	uint32_t _body_get_collision_mask(const RID &body) const override;
+	
+	void _area_set_param(const RID &area, PhysicsServer2D::AreaParameter param, const Variant &value) override;
+	Variant _area_get_param(const RID &area, PhysicsServer2D::AreaParameter param) const override;
+
+	void _body_set_collision_layer(const RID &body, uint32_t layer) override;
+	uint32_t _body_get_collision_layer(const RID &body) const override;
+	//PhysicsDirectSpaceState2D * _space_get_direct_state(const RID &space) override;
 };
 
 class PhysicsServerBox2DFactory : public Object {
@@ -137,5 +169,8 @@ public:
 		return physics_server_2d;
 	}
 };
+
+
+
 
 #endif // ! PHYSICS_SERVER_BOX2D_H

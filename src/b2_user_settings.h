@@ -18,14 +18,15 @@
 
 // User data
 
-class Box2DCollisionObject;
-
-struct B2_API b2BodyUserData {
-	b2BodyUserData() {
-		collision_object = nullptr;
+struct B2_API b2BodyUserData
+{
+	b2BodyUserData()
+	{
+		pointer = 0;
 	}
 
-	Box2DCollisionObject *collision_object;
+	/// For legacy compatibility
+	uintptr_t pointer;
 };
 
 struct B2_API b2FixtureUserData {

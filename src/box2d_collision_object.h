@@ -61,6 +61,9 @@ protected:
 	Box2DCollisionObject(Type p_type);
 
 public:
+
+	
+	
 	_FORCE_INLINE_ Type get_type() const { return type; }
 
 	_FORCE_INLINE_ void set_self(const RID &p_self) { self = p_self; }
@@ -107,6 +110,15 @@ public:
 
 	virtual void set_space(Box2DSpace *p_space) = 0;
 	_FORCE_INLINE_ Box2DSpace *get_space() const { return space; }
+
+	int collision_layer=0;
+	int collision_mask=0;
+	void set_collision_mask(uint32_t mask);
+
+	uint32_t get_collision_mask( );
+
+	void set_collision_layer(uint32_t layer);
+	uint32_t get_collision_layer( );
 
 	Box2DCollisionObject();
 	virtual ~Box2DCollisionObject();

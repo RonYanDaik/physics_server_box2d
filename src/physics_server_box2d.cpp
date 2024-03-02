@@ -27,6 +27,8 @@ RID PhysicsServerBox2D::_shape_create(ShapeType p_shape) {
 		case SHAPE_CONCAVE_POLYGON: {
 			shape = memnew(Box2DShapeConcavePolygon);
 		} break;
+		default:
+			UtilityFunctions::print("Error: PhysicsServerBox2D::_shape_create shapetype",p_shape,"is not implemented;");
 	}
 
 	RID id = shape_owner.make_rid(shape);
@@ -490,3 +492,121 @@ PhysicsServerBox2D::PhysicsServerBox2D() {
 
 PhysicsServerBox2D::~PhysicsServerBox2D() {
 }
+
+
+bool PhysicsServerBox2D::_body_test_motion(const RID& body, const Transform2D& from, const Vector2& motion,
+	double margin, bool collide_separation_ray, bool recovery_as_collision,
+	PhysicsServer2DExtensionMotionResult* result) const
+{
+	//UtilityFunctions::print(this, " Error! PhysicsServerBox2D::_body_test_motion unimplemented!");
+	return false;
+}
+
+void PhysicsServerBox2D::_area_attach_canvas_instance_id(const RID& area, uint64_t id)
+{
+	
+}
+
+
+void PhysicsServerBox2D::_area_set_monitorable(const RID& p_area, bool monitorable)
+{
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND(!area);
+	area->is_monitorable = monitorable;
+}
+
+void PhysicsServerBox2D::_area_set_pickable(const RID& area, bool pickable)
+{
+}
+
+void PhysicsServerBox2D::_area_set_monitor_callback(const RID& p_area, const Callable& callback)
+{
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND(!area);
+	//area->ares_body_callback = const_cast<Callable *>( &callback);
+	area->ares_body_callback = ( callback);
+}
+
+void PhysicsServerBox2D::_area_set_area_monitor_callback(const RID& p_area, const Callable& callback)
+{
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND(!area);
+	//area->ares_area_callback =const_cast<Callable *>( &callback);
+	area->ares_area_callback =( callback);
+}
+
+void PhysicsServerBox2D::_body_set_shape_as_one_way_collision(const RID& body, int32_t shape_idx, bool enable,
+	double margin)
+{
+	
+}
+
+void PhysicsServerBox2D::_body_attach_canvas_instance_id(const RID& body, uint64_t id)
+{
+	
+}
+
+void PhysicsServerBox2D::_body_set_pickable(const RID& body, bool pickable)
+{
+	
+}
+
+void PhysicsServerBox2D::_area_set_collision_layer(const RID& p_area, uint32_t layer)
+{
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND(!area);
+	area->set_collision_layer(layer);
+}
+
+
+void PhysicsServerBox2D::_area_set_collision_mask(const RID &p_area, uint32_t mask) {
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND(!area);
+	area->set_collision_mask(mask);
+}
+
+uint32_t PhysicsServerBox2D::_area_get_collision_mask(const RID &p_area) const {
+	Box2DArea *area = area_owner.get_or_null(p_area);
+	ERR_FAIL_COND_V(!area,0);
+	return area->get_collision_mask();
+}
+
+void PhysicsServerBox2D::_body_set_collision_mask(const RID &p_body, uint32_t mask) {
+	Box2DBody *body = body_owner.get_or_null(p_body);
+	ERR_FAIL_COND(!body);
+
+	body->set_collision_mask(mask);
+}
+
+uint32_t PhysicsServerBox2D::_body_get_collision_mask(const RID &p_body) const {
+	Box2DBody *body = body_owner.get_or_null(p_body);
+	ERR_FAIL_COND_V(!body,0);
+
+	return body->get_collision_mask();
+}
+
+void PhysicsServerBox2D::_area_set_param(const RID &area, PhysicsServer2D::AreaParameter param, const Variant &value) {
+	//UtilityFunctions::print("PhysicsServerBox2D::_area_set_param ",area, " ", param, " ", value);
+}
+
+Variant PhysicsServerBox2D::_area_get_param(const RID &area, PhysicsServer2D::AreaParameter param) const {
+	//UtilityFunctions::print("PhysicsServerBox2D::_area_set_param ",area, " ", param, " ");
+	return Variant(0);
+}
+
+void PhysicsServerBox2D::_body_set_collision_layer(const RID &p_body, uint32_t layer) {
+	Box2DBody *body = body_owner.get_or_null(p_body);
+	ERR_FAIL_COND(!body);
+
+	body->set_collision_layer(layer);
+}
+
+uint32_t PhysicsServerBox2D::_body_get_collision_layer(const RID &p_body) const {
+	Box2DBody *body = body_owner.get_or_null(p_body);
+	ERR_FAIL_COND_V(!body,0);
+
+	return body->get_collision_layer();
+}
+
+
+

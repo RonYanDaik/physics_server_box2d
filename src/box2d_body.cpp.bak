@@ -16,11 +16,16 @@ Box2DDirectBodyState *Box2DBody::get_direct_state() {
 void Box2DBody::set_linear_velocity(const Vector2 &p_linear_velocity) {
 	b2Vec2 box2d_linear_velocity;
 	godot_to_box2d(p_linear_velocity, box2d_linear_velocity);
+<<<<<<< Updated upstream
 	if (body) {
 		body->SetLinearVelocity(box2d_linear_velocity);
 	} else {
 		body_def->linearVelocity = box2d_linear_velocity;
 	}
+=======
+	if(body)
+		body->SetLinearVelocity(box2d_linear_velocity);
+>>>>>>> Stashed changes
 }
 
 Vector2 Box2DBody::get_linear_velocity() const {
@@ -31,15 +36,21 @@ Vector2 Box2DBody::get_linear_velocity() const {
 }
 
 void Box2DBody::set_angular_velocity(real_t p_angular_velocity) {
+<<<<<<< Updated upstream
 	if (body) {
 		body->SetAngularVelocity(p_angular_velocity);
 	} else {
 		body_def->angularVelocity = p_angular_velocity;
 	}
+=======
+	if(body) body->SetAngularVelocity(p_angular_velocity);
+>>>>>>> Stashed changes
 }
 
 real_t Box2DBody::get_angular_velocity() const {
+	if(body)
 	return body->GetAngularVelocity();
+	else return 0.0;
 }
 
 void Box2DBody::set_active(bool p_active) {
@@ -48,8 +59,6 @@ void Box2DBody::set_active(bool p_active) {
 	}
 
 	active = p_active;
-
-#ifdef ENABLE_SLEEPING
 
 	if (active) {
 		if (mode == PhysicsServer2D::BODY_MODE_STATIC) {
@@ -67,8 +76,6 @@ void Box2DBody::set_active(bool p_active) {
 		}
 		get_space()->body_remove_from_active_list(&active_list);
 	}
-#endif
-	
 }
 
 void Box2DBody::set_mode(PhysicsServer2D::BodyMode p_mode) {
@@ -189,7 +196,7 @@ void Box2DBody::set_space(Box2DSpace *p_space) {
 	}
 
 	_set_space(p_space);
-#ifdef ENABLE_SLEEPING
+
 	if (get_space()) {
 		// TODO: do more
 		if (body) {
@@ -199,8 +206,6 @@ void Box2DBody::set_space(Box2DSpace *p_space) {
 			get_space()->body_add_to_active_list(&active_list);
 		}
 	}
-#endif
-	
 }
 
 void Box2DBody::after_step() {

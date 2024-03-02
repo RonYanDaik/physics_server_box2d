@@ -1,4 +1,5 @@
 #include "box2d_collision_object.h"
+#include "b2_user_settings.h"
 
 #include <godot_cpp/core/memory.hpp>
 
@@ -28,6 +29,8 @@ void Box2DCollisionObject::_update_shapes() {
 				fixture_def.isSensor = type == Type::TYPE_AREA;
 				fixture_def.userData.shape_idx = i;
 				fixture_def.userData.box2d_fixture_idx = j;
+				fixture_def.filter.categoryBits = collision_layer;
+				fixture_def.filter.maskBits = collision_mask;
 				s.fixtures.write[j] = body->CreateFixture(&fixture_def);
 			}
 		}
@@ -138,7 +141,65 @@ void Box2DCollisionObject::_set_space(Box2DSpace *p_space) {
 Box2DCollisionObject::Box2DCollisionObject(Type p_type) {
 	type = p_type;
 	body_def = memnew(b2BodyDef);
-	body_def->userData.collision_object = this;
+	body_def->userData.pointer = reinterpret_cast<uintptr_t>(this);
+}
+
+void Box2DCollisionObject::set_collision_layer(uint32_t layer) {
+	//get the existing filter
+	collision_layer = layer;
+	if(!body)
+		return;
+	b2Fixture* m_fixtureList = body->GetFixtureList();
+	for (b2Fixture* f = m_fixtureList; f; f = f->GetNext()) {
+		b2Filter filter = f->GetFilterData();
+		//change whatever you need to, eg.
+		filter.categoryBits = layer;
+		//and set it back
+		f->SetFilterData(filter);
+		
+	}
+}
+
+void Box2DCollisionObject::set_collision_mask(uint32_t mask) {
+	//get the existing filter
+	collision_mask = mask;
+	
+	if(!body)
+		return;
+	b2Fixture* m_fixtureList = body->GetFixtureList();
+	for (b2Fixture* f = m_fixtureList; f; f = f->GetNext()) {
+		b2Filter filter = f->GetFilterData();
+		//change whatever you need to, eg.
+		filter.maskBits = mask;
+		//and set it back
+		f->SetFilterData(filter);
+	}
+}
+
+uint32_t Box2DCollisionObject::get_collision_mask() {
+	//get the existing filter
+	if(!body)
+		return collision_mask;
+	b2Fixture* m_fixtureList = body->GetFixtureList();
+	if(m_fixtureList) {
+		b2Filter filter = m_fixtureList->GetFilterData();
+		//change whatever you need to, eg.
+		return filter.maskBits;
+	}
+	return collision_mask;
+}
+
+uint32_t Box2DCollisionObject::get_collision_layer() {
+	//get the existing filter
+	if(!body)
+		return collision_layer;
+	b2Fixture* m_fixtureList = body->GetFixtureList();
+	if(m_fixtureList) {
+		b2Filter filter = m_fixtureList->GetFilterData();
+		//change whatever you need to, eg.
+		return filter.categoryBits;
+	}
+	return collision_layer;
 }
 
 Box2DCollisionObject::~Box2DCollisionObject() {

@@ -25,6 +25,8 @@ void initialize_physics_server_box2d_module(ModuleInitializationLevel p_level) {
 
 	box2d_factory = memnew(PhysicsServerBox2DFactory());
 	PhysicsServer2DManager::get_singleton()->register_server("Box2D", Callable(box2d_factory, "create_box2d_callback"));
+
+	
 }
 
 void uninitialize_physics_server_box2d_module(ModuleInitializationLevel p_level) {
